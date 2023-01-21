@@ -90,3 +90,33 @@ impl RpnCalculator {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_ok() {
+        let calc = RpnCalculator::new(false);
+        let v = vec![
+            ("5", 5),
+            ("50", 50),
+            ("-50", -50),
+            ("2 3 +", 5),
+            ("2 3 *", 6),
+            ("2 3 -", -1),
+            ("2 3 /", 0),
+            ("2 3 %", 2),
+        ];
+        for t in v {
+            assert_eq!(calc.eval(t.0), t.1);
+        }
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_ng() {
+        let calc = RpnCalculator::new(false);
+        calc.eval("1 1 ^");
+    }
+}
